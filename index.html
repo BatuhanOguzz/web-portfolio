@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolyo Sitesi</title>
+
+    <!-- Icon & Font -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stiller -->
+    <style>
+        /* ---------- GENEL ---------- */
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{font-family:'Poppins',sans-serif;line-height:1.8;color:#333;background:#FAF8F0}
+        h1,h2,h3,.section-title{font-family:'Playfair Display',serif}
+        .nav-links li a{font-size:1.1rem;font-weight:500}
+        .profile-text h1{font-size:3.2rem;font-weight:700;margin-bottom:.5rem}
+        .profile-text h2{font-size:2rem;font-weight:500;color:#666;margin-bottom:1.5rem}
+        .section-title{font-size:2.8rem;font-weight:600;margin-bottom:3rem;text-align:center}
+        .timeline-content h3{font-size:1.8rem;margin-bottom:.5rem}
+        .timeline-date{font-size:1.2rem;font-weight:600}
+        .project-card h3{font-size:1.6rem;padding:1.2rem 1rem .8rem}
+        .project-card p{font-size:1.1rem;line-height:1.7}
+        .about-content p{font-size:1.1rem;line-height:1.8;margin-bottom:2rem}
+        .skill-tags span{font-size:1rem;font-weight:500}
+
+        /* ---------- HEADER ---------- */
+        header{background:#BDAC97;box-shadow:0 2px 5px rgba(0,0,0,.1);position:fixed;width:100%;top:0;z-index:1000}
+        nav{display:flex;justify-content:space-between;align-items:center;padding:1rem 5%;max-width:1200px;margin:0 auto}
+        .nav-links{display:flex;list-style:none}
+        .nav-links li a{text-decoration:none;color:#333;padding:.5rem 1rem;transition:color .3s}
+        .nav-links li a:hover{color:#9C8B7C}
+
+        /* ---------- HOME ---------- */
+        #home{height:100vh;display:flex;align-items:center;justify-content:center;padding-top:60px}
+        .profile-container{text-align:center}
+        .profile-image img{width:300px;height:300px;border-radius:50%;object-fit:cover;margin-bottom:2rem;box-shadow:0 10px 20px rgba(0,0,0,.4)}
+        .social-links a{color:#9C8B7C;margin:0 10px;font-size:1.5rem;transition:color .3s}
+        .social-links a:hover{color:#BDAC97}
+
+        /* ---------- SECTIONS ---------- */
+        section{padding:5rem 5%;max-width:1200px;margin:0 auto}
+
+        /* Yetenekler */
+        .skill-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:1rem}
+        .skill-tags span{background:#9C8B7C;color:#FAF8F0;padding:.5rem 1rem;border-radius:20px;font-size:.9rem}
+        .project-tags{display:flex;flex-wrap:wrap;gap:6px;padding:0.8rem 1rem 0}
+        .project-tags span{background:#BDAC97;color:#FAF8F0;padding:0.3rem 0.7rem;border-radius:15px;font-size:0.8rem;font-weight:500}
+
+        /* Timeline */
+        .timeline{position:relative;padding:2rem 0}
+        .timeline-item{margin-bottom:2rem;padding-left:2rem;border-left:2px solid #BDAC97}
+        .timeline-date{font-weight:bold;color:#9C8B7C}
+
+        /* Projeler */
+        .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}
+        .project-card{background:#FAF8F0;border:1px solid #BDAC97;border-radius:10px;overflow:hidden;box-shadow:0 3px 15px rgba(156,139,124,.15)}
+        .project-card img{width:100%;height:200px;object-fit:cover;background:#FFF;padding:10px;border-bottom:1px solid #BDAC97}
+        .project-card h3{background:#BDAC97;color:#FAF8F0;padding:1.2rem 1rem .8rem;margin:0}
+        .project-card p{padding:1.5rem 1rem;color:#333}
+        .project-links{padding:1rem;display:flex;gap:1rem;background:#FAF8F0;border-top:1px solid #BDAC97}
+        .project-links a{color:#9C8B7C;text-decoration:none;transition:color .3s}
+        .project-links a:hover{color:#BDAC97}
+
+        /* Chatbot */
+        .chatbot{position:fixed;bottom:20px;right:20px;width:300px;height:400px;background:#fff;border-radius:10px;box-shadow:0 0 10px rgba(0,0,0,.1);display:flex;flex-direction:column;transition:.3s;z-index:1000}
+        .chat-header{background:#9C8B7C;color:#FAF8F0;padding:1rem;border-radius:10px 10px 0 0;display:flex;justify-content:space-between;align-items:center}
+        .chat-controls{display:flex;gap:8px}
+        .chat-controls button{background:none;border:none;color:#FAF8F0;cursor:pointer;width:30px;height:30px;border-radius:4px;display:flex;align-items:center;justify-content:center}
+        .chat-controls button:hover{background:rgba(255,255,255,.2)}
+        .chat-controls i{font-size:14px}
+        .chat-messages{flex-grow:1;padding:1rem;overflow-y:auto;background:#fff}
+        .chat-input{display:flex;padding:1rem;background:#fff;border-top:1px solid #eee;border-radius:0 0 10px 10px}
+        .chat-input input{flex-grow:1;padding:.5rem;border:1px solid #ddd;border-radius:20px;margin-right:.5rem;font-size:.9rem}
+        .chat-input button{background:#9C8B7C;color:#FAF8F0;border:none;padding:.5rem 1rem;border-radius:20px;cursor:pointer}
+        .chat-input button:hover{background:#8a7b6c}
+
+        /* Chatbot states */
+        .chatbot.minimized{height:60px!important}
+        .chatbot.minimized .chat-messages,.chatbot.minimized .chat-input{display:none}
+        .chatbot.maximized{width:80%!important;height:80%!important;top:10%!important;right:10%!important;bottom:auto}
+
+        /* Messages */
+        .message{margin:10px;padding:10px;border-radius:10px;max-width:80%;word-wrap:break-word}
+        .user-message{background:#9C8B7C;color:#fff;margin-left:auto}
+        .bot-message{background:#f0f0f0;color:#333;margin-right:auto}
+
+        /* Modal */
+        .modal{display:none;position:fixed;z-index:1001;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,.5)}
+        .modal-content{background:#FAF8F0;margin:15% auto;padding:30px;border:1px solid #BDAC97;border-radius:10px;width:80%;max-width:500px;position:relative;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+        .close-button{position:absolute;right:20px;top:10px;color:#9C8B7C;font-size:28px;font-weight:bold;cursor:pointer}
+        .close-button:hover{color:#BDAC97}
+        .contact-info p{margin:15px 0;font-size:1.1rem;color:#333}
+        .contact-info i{color:#9C8B7C;margin-right:10px;width:20px}
+        .contact-info a{color:#9C8B7C;text-decoration:none;transition:color .3s}
+        .contact-info a:hover{color:#BDAC97}
+
+        /* Mobile */
+        @media(max-width:768px){
+            .nav-links{display:none}
+            .profile-container{padding:0 1rem}
+            .chatbot{width:100%;height:50vh;bottom:0;right:0;border-radius:10px 10px 0 0}
+            .chatbot.maximized{width:100%!important;height:100%!important;top:0!important;right:0!important}
+            .modal-content{margin:30% auto;width:90%;padding:20px}
+        }
+    </style>
+
+    <!-- Chatbot script yükleniyor -->
+</head>
+<body>
+
+<!-- ---------- HEADER ---------- -->
+<header>
+    <nav>
+        <div class="logo"></div>
+        <ul class="nav-links">
+            <li><a href="#home">Ana Sayfa</a></li>
+            <li><a href="#about">Hakkımda</a></li>
+            <li><a href="#experience">Deneyim</a></li>
+            <li><a href="#projects">Projeler</a></li>
+            <li><a href="#" onclick="openContactModal()">İletişim</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- ---------- HOME ---------- -->
+<section id="home">
+    <div class="profile-container">
+        <div class="profile-image">
+            <img src="public/src/image.png" alt="Profil Fotoğrafı">
+        </div>
+        <div class="profile-text">
+            <h1>Merhaba, Ben Batuhan</h1>
+            <h2>Software Developer | Product & Project Coordinator</h2>
+            <div class="social-links">
+                <a href="https://github.com/BatuhanOguzz" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/batuhanoguz06/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ---------- HAKKIMDA ---------- -->
+<section id="about">
+    <h2 class="section-title">Hakkımda</h2>
+    <div class="about-content">
+        <p>Merhaba! Ben yazılım geliştirme, oyun tasarımı ve yapay zeka alanlarına ilgi duyan bir üniversite öğrencisiyim. Teknolojinin nasıl çalıştığını anlamak ve sorunları çözmek benim için oldukça keyif verici. Analitik düşünme yeteneğimle, kullanıcı dostu, yenilikçi ve eğlenceli projeler üretmeyi hedefliyorum.</p>
+        <p>Oyun sektörüne duyduğum ilgi sayesinde, game developer olarak projeler geliştiriyor ve hem teknik becerilerimi hem de yaratıcı yönümü geliştirme fırsatı buluyorum. Oyun geliştirme süreçlerinde hem yazılım altyapısı hem de kullanıcı deneyimi açısından değer üretmeye odaklanıyorum.</p>
+        <p>Yeni teknolojileri ve sektördeki gelişmeleri takip ederek kendimi sürekli geliştirmeye çalışıyorum. Ekip çalışmasına uyum sağlamakta ve işbirliği yaparak daha iyi sonuçlar elde etmekte oldukça yetkinim. Projelerde karşılaştığım zorlukları aşmak için yaratıcı çözümler bulmak benim için hem bir öğrenme fırsatı hem de keyifli bir süreç.</p>
+        <p>Kendimi yazılım ve oyun geliştirme alanlarında daha da geliştirmek ve öğrendiklerimi gerçek projelerde uygulamak istiyorum. Gelecekte, katkıda bulunabileceğim yaratıcı projelerle hem kendimi hem de çevremdekileri geliştirmek için sabırsızlanıyorum.</p>
+        <div class="skills">
+            <h3>Yetenekler</h3>
+            <div class="skill-tags">
+                <span>C#</span><span>Unity</span><span>Temel Web Teknolojileri</span><span>Git & GitHub</span><span>Notion</span><span>Blender</span><span>Canva</span><span>Çevik Metodoloji</span><span>Ürün Yönetimi</span><span>B2 İngilizce</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ---------- DENEYİM ---------- -->
+<section id="experience">
+    <h2 class="section-title">Deneyim</h2>
+    <div class="timeline">
+        <div class="timeline-item">
+            <div class="timeline-date">2023 - 2024</div>
+            <div class="timeline-content">
+                <h3>ERY Systems</h3>
+                <p>IT Intern</p>
+                <p>Son kullanıcıların sistem sorunlarını analiz edip kök nedenlerini belirleyerek teknik destek ekibiyle koordineli çözümler ürettim. Teknik destek taleplerini iş etkisine göre önceliklendirerek operasyonel süreçlerin kesintisiz ilerlemesine katkı sağladım. Programlama bilgimi kullanarak tekrarlayan bilişim sorunları için etkili ve kalıcı iş akışları oluşturdum.</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">2024 - 2025</div>
+            <div class="timeline-content">
+                <h3>U2 Soft</h3>
+                <p>Software Developer</p>
+                <p>Çapraz fonksiyonlu ekiplerle iş birliği içinde yazılım geliştirme süreçlerinde aktif rol aldım. Ürün kalitesini artırmaya yönelik test, hata ayıklama ve optimizasyon süreçlerine katkı sağlayarak proje teslimat hedeflerinin tutturulmasına destek oldum. İhtiyaç analizleri doğrultusunda teknik çözümler üreterek kullanıcı deneyimini iyileştirdim.</p>
+            </div>
+        </div>
+        <div class="timeline-item">
+            <div class="timeline-date">2025 - Günümüz</div>
+            <div class="timeline-content">
+                <h3>411 Software</h3>
+                <p>Game Developer</p>
+                <p>Çok kullanıcılı ve gerçek zamanlı bir yazılım ürününün konsept aşamasından itibaren tüm ürün yaşam döngüsünü tek başıma, uçtan uca yönettim. Geliştirme sürecini planlamak için Notion üzerinden ürün yol haritasını ve proje takvimini oluşturarak zaman, efor ve öncelik yönetimini sağladım. Teknik kısıtlamalar ile ürün tasarımı hedefleri arasında denge kurarak, projeyi vizyonuna sadık bir şekilde kullanıma hazır ilk sürümüne taşıdım.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ---------- PROJELER ---------- -->
+<section id="projects">
+    <h2 class="section-title">Projeler</h2>
+    <div class="projects-grid">
+
+        <!-- Billtastic -->
+        <div class="project-card">
+            <img src="public/src/Proje1.png" alt="Billtastic">
+            <h3>Billtastic</h3>
+            <div class="project-tags">
+                <span>C#</span><span>.NET</span><span>WPF</span>
+            </div>
+            <p>U2 Soft'ta geliştirdiğim ilk büyük proje. İşletmelerin fatura takibini kolaylaştıran, otomatik hatırlatma bildirimleri gönderen ve fatura geçmişini raporlayan bir masaüstü uygulaması. Projenin hem yazılım geliştirme sürecini hem de pazarlama faaliyetlerini yönettim.</p>
+            <div class="project-links">
+                <a href="https://github.com/BatuhanOguzz/Billtastic-1.0.4" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+        </div>
+
+        <!-- Portfolyo Sitesi -->
+        <div class="project-card">
+            <img src="public/src/PortfolioSite.png" alt="Portfolyo Web Sitesi">
+            <h3>Bu Portfolyo Sitesi</h3>
+            <div class="project-tags">
+                <span>HTML</span><span>CSS</span><span>JavaScript</span><span>OpenAI API</span>
+            </div>
+            <p>Sıfırdan kodladığım, modern ve responsive tasarıma sahip kişisel portfolyo platformu. OpenAI API ile entegre edilmiş yapay zeka destekli chatbot sayesinde ziyaretçiler benimle ilgili sorularına anında yanıt alabiliyor.</p>
+            <div class="project-links">
+                <a href="https://github.com/BatuhanOguzz/BatuhanOguzz.github.io/tree/master" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+        </div>
+
+        <!-- Roblox Oyunu -->
+        <div class="project-card">
+            <img src="public/src/TitansArena.png" alt="Titans Arena">
+            <h3>Titans Arena</h3>
+            <div class="project-tags">
+                <span>Lua</span><span>Roblox Studio</span>
+            </div>
+            <p>Roblox Studio ile geliştirdiğim, sınıf tabanlı yeteneklere sahip çok oyunculu aksiyon arenası. Oyun mekanik tasarımı, kullanıcı arayüzü, veri kayıt sistemleri ve oyun içi ekonomi gibi sistemleri baştan sona tasarlayıp kodladım.</p>
+            <div class="project-links">
+                <a href="https://www.roblox.com/share?code=5e213bc52ee1e24fbdcaf83515f09e8c&type=ExperienceDetails&stamp=1747394951914" target="_blank"><i class="fas fa-play-circle"></i> Oyna</a>
+            </div>
+        </div>
+
+        <!-- diffiCULT -->
+        <div class="project-card">
+            <img src="public/src/difficult.png" alt="diffiCULT">
+            <h3>diffiCULT</h3>
+            <div class="project-tags">
+                <span>Unity</span><span>C#</span><span>Notion</span>
+            </div>
+            <p>411 Software'da konsept aşamasından itibaren tüm ürün yaşam döngüsünü uçtan uca yönettiğim, çok kullanıcılı ve gerçek zamanlı bir oyun projesi. Notion üzerinden ürün yol haritası ve proje takvimi oluşturarak geliştirme sürecini planladım. Teknik kısıtlamalar ile tasarım hedefleri arasında denge kurarak projeyi kullanıma hazır ilk sürümüne taşıdım.</p>
+            <div class="project-links">
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ---------- CHATBOT ---------- -->
+<div class="chatbot" id="chatbot">
+    <div class="chat-header">
+        <h3>Sanal Batuhan</h3>
+        <div class="chat-controls">
+            <button onclick="minimizeChatbot()"><i class="fas fa-minus"></i></button>
+            <button onclick="maximizeChatbot()"><i class="fas fa-expand"></i></button>
+            <button onclick="resetChatbot()"><i class="fas fa-redo"></i></button>
+        </div>
+    </div>
+    <div class="chat-messages" id="chat-messages"></div>
+    <div class="chat-input">
+        <input type="text" placeholder="Mesajınızı yazın...">
+        <button><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<!-- ---------- SCRIPTS ---------- -->
+<script>
+// Chatbot state
+let isMinimized=false,isMaximized=false;
+function minimizeChatbot(){const c=document.getElementById('chatbot');isMinimized=!isMinimized;if(isMaximized){isMaximized=false;c.classList.remove('maximized')}c.classList.toggle('minimized')}
+function maximizeChatbot(){const c=document.getElementById('chatbot');isMaximized=!isMaximized;if(isMinimized){isMinimized=false;c.classList.remove('minimized')}c.classList.toggle('maximized')}
+function resetChatbot(){const c=document.getElementById('chatbot');isMinimized=false;isMaximized=false;c.classList.remove('minimized','maximized')}
+
+// Send message
+document.querySelector('.chat-input button').addEventListener('click',sendMessage)
+document.querySelector('.chat-input input').addEventListener('keypress',e=>{if(e.key==='Enter')sendMessage()})
+// Lokalde test ederken localhost:3000 kullanir, uretimde Vercel URL'sini kullanir
+const CHATBOT_API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:3000/api/chat'
+    : 'https://web-chi-lac-37.vercel.app/api/chat';
+
+function sendMessage(){
+    const input=document.querySelector('.chat-input input')
+    const message=input.value.trim();if(!message)return;
+    addMessage('user',message);input.value='';
+    addMessage('bot','Düşünüyorum...');
+    const thinkingMsg=document.querySelector('#chat-messages .message:last-child');
+    fetch(CHATBOT_API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message})})
+    .then(r=>r.json()).then(r=>{thinkingMsg.remove();addMessage('bot',r)})
+    .catch(()=>{thinkingMsg.remove();addMessage('bot','Üzgünüm, şu an yanıt veremiyorum. Lütfen daha sonra tekrar deneyin.')})
+}
+function addMessage(sender,text){
+    const messagesDiv=document.querySelector('#chat-messages')
+    const div=document.createElement('div');div.className=`message ${sender}-message`;div.innerHTML=`<p>${text}</p>`;
+    messagesDiv.appendChild(div);messagesDiv.scrollTop=messagesDiv.scrollHeight
+}
+// Welcome
+addMessage('bot','Merhaba! Ben Batuhan\'ın sanal asistanıyım. Size nasıl yardımcı olabilirim?')
+</script>
+
+<!-- ---------- İLETİŞİM MODAL ---------- -->
+<div id="contactModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeContactModal()">&times;</span>
+        <h2>İletişim Bilgileri</h2>
+        <div class="contact-info">
+            <p><i class="fas fa-phone"></i> Telefon: <a href="tel:+905350687469">+90 535 068 74 69</a></p>
+            <p><i class="fas fa-envelope"></i> E-posta: <a href="mailto:batuhan.oguz06@outlook.com">batuhan.oguz06@outlook.com</a></p>
+        </div>
+    </div>
+</div>
+<script>
+function openContactModal(){document.getElementById('contactModal').style.display='block'}
+function closeContactModal(){document.getElementById('contactModal').style.display='none'}
+window.onclick=e=>{const m=document.getElementById('contactModal');if(e.target===m)m.style.display='none'}
+</script>
+
+</body>
+</html>
